@@ -23,7 +23,8 @@ int main(void) {
 	int v1[TAM], v2[TAM];				/* vectors sended from clients*/ 
 	char *aux1[TAM], *aux2[TAM];			/* receive vectors */        
 	int n;						/* if read and write OK */
-
+	int i;
+	
        port_number = 57531;                           /* port communication */
        sockfd = socket(AF_INET, SOCK_STREAM, 0);	/* socket communication using Internet */
 	 
