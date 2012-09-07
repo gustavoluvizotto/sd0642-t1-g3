@@ -133,10 +133,4 @@ extern void showelapsedtimes(const struct timeval *t) {
 	/* imprime na tela o TTSiM: tempo de transmissão server i -> master */
 	printf("TTS%dM: %s\n", 13, elapsedtime(t[70], t[64]));
 	printf("TTS%dM: %s\n", 14, elapsedtime(t[71], t[69]));
-
-	/* imprime na tela o TTMCi: tempo de transmissão master -> client i
-	 * não tem como imprimir essa informação pois cada processo client possui sua última
-	 * medição de tempo (término recebimento master -> client) */
-//	for (host_id = 1; host_id <= 8; host_id++)
-//		printf("TTMC%d: %s\n", host_id, elapsedtime(t[host_id*5-2], t[73+host_id]));
 }

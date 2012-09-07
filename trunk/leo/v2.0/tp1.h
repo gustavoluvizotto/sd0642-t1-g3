@@ -33,7 +33,8 @@
 #define TAM 1000 /* tamanho do vetor principal a ser ordenado */
 #define CTAM  TAM/8 /* tamanho do vetor para o programa client */
 #define CPORT 21845 /* número da porta de escuta para programa client */
-#define SPORT 21845 /* número da porta de escuta para programa server */
+#define SPORT1 21845 /* número da porta de escuta para programa server (thread 1)*/
+#define SPORT2 21846 /* número da porta de escuta para programa server (thread 2) */
 
 /* definições para indexar o vetor de timestamps */
 #define CLIENT_ORDENATION_START 0
@@ -72,6 +73,23 @@ struct client_buffer {
 /* Buffer que o master utiliza para enviar dados para os clientes */
 struct master_buffer {
 	int v[TAM];
+	struct timeval tsv[82];
+};
+
+/* Buffer usado pelos servidores de nível 1 para envio do pacote
+ * para os servidores do nível 2. Usado também como buffer dos
+ * servidores de nível 2, para recebimento dos pacotes enviados
+ * pelos servers do nível 1 */
+struct buffer250 {
+	int v[2*CTAM];
+	struct timeval tsv[82];
+};
+
+/* Buffer usado pelos servidores de nível 2 para envio ao master,
+ * e usado pelo master, para recebimento dos pacotes enviados
+ * pelos servers de nível 2 */
+struct buffer500 {
+	int v[4*CTAM];
 	struct timeval tsv[82];
 };
 

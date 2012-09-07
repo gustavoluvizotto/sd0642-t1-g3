@@ -7,12 +7,13 @@ int main(int argc, char **argv) {
 	struct sockaddr_in peeraddr, myaddr;
 	int peeraddr_len;
 	struct hostent *server_ent; /* para obter o endereço do server */
-	int server_port = SPORT; /* porta aberta no server */
+	int server_port; /* porta aberta no server */
 	int client_port = CPORT; /* porta aberta por este programa client, para receber o vetor completo ordenado */
 	int n; /* número de bytes transmitidos (enviados e/ou recebidos) */
 	struct client_buffer cbuffer = {{0}, {{0,0}}}; /* buffer utilizado para passar o vetor ordenado para o server */
 	struct master_buffer mbuffer = {{0}, {{0,0}}}; /* buffer para receber dados do master */
 	int host_id; /* id deste client */
+	int server_id;
 	int aux;
 
 	if (argc != 2) {
@@ -22,10 +23,15 @@ int main(int argc, char **argv) {
 
 	host_id = atoi(argv[1]);
 
+	if (host_id % 2)
+		server_port = SPORT1; /* host_id ímpares conectam-se na porta SPORT1 do server de nível 1 */
+	else
+		server_port = SPORT2; /* host_id pares conectam-se na porta SPORT2 do server de nível 1 */
+
 	/* id do server que este client deve se conectar para passar o vetor adiante.
 	 * Por exemplo, se o host_id = 1 ou 2, o server_id será 9. Se o host_id = 11
 	 * ou 12, server_id = 14, e assim por diante   */
-	int server_id = (host_id + 1)/2 + 8;
+	server_id = (host_id + 1)/2 + 8;
 
 	/* ponteiro para o início do "pedaço que lhe compete do vetor de timestamps". Exemplos:
 	 * o client com host_id = 1 ficará com o primeiro pedaço, contendo 5 posições no vetor de timestamps;
