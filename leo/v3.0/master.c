@@ -112,16 +112,18 @@ void *threadRecvPacket(void *vargp) {
 			(socklen_t *) &client_addr_len)) < 0)
 		error("ERRO no accept()");
 
-	if (p->threadNumber == 1)
-		n = recv(newsockfd, (void *) &rbuf1, sizeof(struct buffer500), 0);
-	else
-		n = recv(newsockfd, (void *) &rbuf2, sizeof(struct buffer500), 0);
+	if (p->threadNumber == 1) {
+		n = recv(newsockfd, (void *) &rbuf1, sizeof(struct buffer500), MSG_WAITALL);
+		gettimeofday(&tsvp[MASTER_RECV_FINISH_THREAD1], NULL ); /* timestamp logo após recebimento do pacote */
+	}
+	else {
+		n = recv(newsockfd, (void *) &rbuf2, sizeof(struct buffer500), MSG_WAITALL);
+		gettimeofday(&tsvp[MASTER_RECV_FINISH_THREAD2], NULL ); /* timestamp logo após recebimento do pacote */
+	}
 	if (n != sizeof(struct buffer500)) {
-		fprintf(stderr,
-				"ERRO em recv(): número incorreto de bytes recebidos\n");
+		fprintf(stderr, "ERRO em recv(): número incorreto de bytes recebidos\n");
 		exit(EXIT_FAILURE);
 	}
-	gettimeofday(&tsvp[MASTER_RECV_FINISH_THREAD1], NULL ); /* timestamp logo após recebimento do pacote */
 
 	close(sockfd);
 	close(newsockfd);
@@ -186,7 +188,6 @@ void *threadSendPacket(void *vargp) {
 	n = send(sockfd, &sbuf, sizeof(sbuf), 0); /* envia o buffer adiante para o client */
 	if (n != sizeof(sbuf)) {
 		fprintf(stderr, "ERRO no send(): número incorreto de bytes enviados\n");
-		perror(NULL );
 		exit(EXIT_FAILURE);
 	}
 	close(sockfd);
