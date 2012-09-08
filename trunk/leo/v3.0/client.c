@@ -66,7 +66,6 @@ int main(int argc, char **argv) {
 	n = send(sockfd, &cbuffer, sizeof(cbuffer), 0);
 	if (n != sizeof(cbuffer)) {
 		fprintf(stderr, "ERRO no send(): número incorreto de bytes enviados\n");
-		perror(NULL);
 		exit(EXIT_FAILURE);
 	}
 	close(sockfd);
@@ -96,7 +95,7 @@ int main(int argc, char **argv) {
 	if ((newsockfd = accept(sockfd, (struct sockaddr *) &peeraddr, (socklen_t *) &peeraddr_len)) < 0) error("ERRO em accept()");
 
 	/* talvez precise colocar MSG_WAITALL como flag em recv */
-	n = recv(newsockfd, &mbuffer, sizeof(mbuffer), 0);
+	n = recv(newsockfd, &mbuffer, sizeof(mbuffer), MSG_WAITALL);
 	if (n != sizeof(mbuffer)) {
 		fprintf(stderr, "ERRO em recv(): número incorreto de bytes recebidos\n");
 		exit(EXIT_FAILURE);

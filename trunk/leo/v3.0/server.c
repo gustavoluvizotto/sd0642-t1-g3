@@ -112,7 +112,6 @@ int main(int argc, char **argv) {
 		n = send(sockfd, &sbuf250, sizeof(sbuf250), 0); /* envia o buffer adiante para o server de nível 2 */
 		if (n != sizeof(sbuf250)) {
 			fprintf(stderr, "ERRO no send(): número incorreto de bytes enviados\n");
-			perror(NULL);
 			exit(EXIT_FAILURE);
 		}
 		close(sockfd);
@@ -159,7 +158,6 @@ int main(int argc, char **argv) {
 		n = send(sockfd, &sbuf500, sizeof(sbuf500), 0); /* envia o buffer adiante para o master */
 		if (n != sizeof(sbuf500)) {
 			fprintf(stderr, "ERRO no send(): número incorreto de bytes enviados\n");
-			perror(NULL);
 			exit(EXIT_FAILURE);
 		}
 		close(sockfd);
@@ -201,7 +199,7 @@ void *threadRecvPacket(void *vargp) {
 	/* Talvez precise setar a flag MSG_WAITALL, se começar a aparecer lixo no vetor de inteiros */
 	if (p->serverLevel == 1) { /* este processo é um servidor de nível 1 */
 		if (p->threadNumber == 1) {
-			if ((n = recv(newsockfd, (void *) &rbuf125_1, sizeof(struct client_buffer), 0)) != sizeof(struct client_buffer)) {
+			if ((n = recv(newsockfd, (void *) &rbuf125_1, sizeof(struct client_buffer), MSG_WAITALL)) != sizeof(struct client_buffer)) {
 				fprintf(stderr, "ERRO em recv(): número incorreto de bytes recebidos\n");
 				exit(EXIT_FAILURE);
 			}
@@ -209,7 +207,7 @@ void *threadRecvPacket(void *vargp) {
 			gettimeofday(&tsvp[SERVER_RECV_FINISH_THREAD1], NULL); /* faz o timestamp */
 		}
 		else if (p->threadNumber == 2) {
-			if ((n = recv(newsockfd, (void *) &rbuf125_2, sizeof(struct client_buffer), 0)) != sizeof(struct client_buffer)) {
+			if ((n = recv(newsockfd, (void *) &rbuf125_2, sizeof(struct client_buffer), MSG_WAITALL)) != sizeof(struct client_buffer)) {
 				fprintf(stderr, "ERRO em recv(): número incorreto de bytes recebidos\n");
 				exit(EXIT_FAILURE);
 			}
@@ -219,7 +217,7 @@ void *threadRecvPacket(void *vargp) {
 	}
 	else if (p->serverLevel == 2) { /* este processo é um servidor de nível 2 */
 		if (p->threadNumber == 1) {
-			if ((n = recv(newsockfd, (void *) &rbuf250_1, sizeof(struct buffer250), 0)) != sizeof(struct buffer250)) {
+			if ((n = recv(newsockfd, (void *) &rbuf250_1, sizeof(struct buffer250), MSG_WAITALL)) != sizeof(struct buffer250)) {
 				fprintf(stderr, "ERRO em recv(): número incorreto de bytes recebidos\n");
 				exit(EXIT_FAILURE);
 			}
@@ -227,7 +225,7 @@ void *threadRecvPacket(void *vargp) {
 			gettimeofday(&tsvp[SERVER_RECV_FINISH_THREAD1], NULL); /* faz o timestamp */
 		}
 		else if (p->threadNumber == 2) {
-			if ((n = recv(newsockfd, (void *) &rbuf250_2, sizeof(struct buffer250), 0)) != sizeof(struct buffer250)) {
+			if ((n = recv(newsockfd, (void *) &rbuf250_2, sizeof(struct buffer250), MSG_WAITALL)) != sizeof(struct buffer250)) {
 				fprintf(stderr, "ERRO em recv(): número incorreto de bytes recebidos\n");
 				exit(EXIT_FAILURE);
 			}
