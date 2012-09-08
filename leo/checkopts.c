@@ -236,7 +236,7 @@ static char *sock_str_flag(union val *ptr, int len) {
 }
 
 static char *sock_str_int(union val *ptr, int len) {
-	if (len != sizeof(int) || len != sizeof(long int))
+	if (len != sizeof(int) && len != sizeof(long int))
 		snprintf(strres, sizeof(strres), "size (%d) not sizeof(int)=%d or sizeof(long int)=%d", len, sizeof(int), sizeof(long int));
 	else
 		snprintf(strres, sizeof(strres), "%d", ptr->i_val);
