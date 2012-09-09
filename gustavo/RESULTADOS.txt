@@ -1,0 +1,17 @@
+Os resultados gerados a partir dos códigos executáveis (ver README.txt para saber como executar o trabalho) são apresentados da seguinte forma:
+
+1) o vetor ordenado.
+2) tempo decorrido para ordenar o vetor. Método de ordenação usado: Bubble Sort.
+   Estes dois ítens acima são comuns à todos os códigos. Alguns códigos imprimem alguns itens diferentes, ou seja:
+3) para os executáveis client1, client2, client3, client4, client5, client6, client7 e client8, o tempo de comunicação entre cada um deles e o 
+servidor principal (servidor que possui o vetor final de 1000 posições) é mostrado.
+4) para os executáveis server1, server2, server3, server4, servers1, servers2 e serverp, são mostrados os tempos de comunicação com o dois clientes
+os quais recebem os vetores, que posteriormente serão unidos em um e ordenados.
+
+Maiores detalhes são discutidos no relatório.
+
+OBS. 1: O tempo total da operação foi calculado somando-se os tempos de ordenação e comunicação. Não foi capturado como os demais tempos devido ao
+fato de que os códigos são executados de forma manual, portanto o tempo total poderia ter eventuais atrasos.
+OBS. 2: Foi omitido a apresentação do vetor original (apenas apresentado o vetor já ordenado), pois os vetores nos clientes são vetores aleatórios
+gerados com as funções srand48() e lrand48() e os vetores originais nos servidores são pares de vetores ordenados que são unidos em um único vetor
+formando um terceiro vetor, que é ordenado e apresentado.
